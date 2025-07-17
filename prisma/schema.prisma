@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Guest {
+  id                  String    @id @default(uuid())
+  name                String
+  guestNumber         Int       @unique
+  code                String    @unique
+  hasResponded        Boolean   @default(false)
+  attending           Boolean   @default(false)
+  guestCount          Int       @default(1)
+  dietaryRestrictions String?
+  comments            String?
+  createdAt           DateTime  @default(now())
+  respondedAt         DateTime?
+
+  @@map("guests")
+}
+
+model WeddingConfig {
+  id                 String   @id @default(uuid())
+  brideName          String   @default("Novia")
+  groomName          String   @default("Novio")
+  weddingDate        DateTime @default(now())
+  ceremonyLocation   String   @default("Iglesia")
+  ceremonyAddress    String   @default("Dirección de la ceremonia")
+  ceremonyMapIframe  String?
+  receptionLocation  String   @default("Salón de fiestas")
+  receptionAddress   String   @default("Dirección de la recepción")
+  receptionMapIframe String?
+  backgroundImage    String?
+  brideImage         String?
+  groomImage         String?
+  coupleImage        String?
+  welcomeMessage     String   @default("¡Nos casamos!")
+  ourStory           String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@map("wedding_config")
+}
